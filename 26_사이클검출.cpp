@@ -3,59 +3,57 @@
 #include <set>
 using namespace std;
 
-vector<int> parent, rankArr;
+struct UnionFind {
+    vector<int>parent, size;
+    UnionFind(int n) : parent(n), size(n, 0) {
+        for (int i = 0;i < n;i++) {
+            parent[i] = i;
+        }
+    }
 
-int findParent(int x) {
-    if (parent[x] == x)
-        return x;
-    return parent[x] = findParent(parent[x]);
-}
+    int find(int x) {
+        if (parent[x] == x)return x;
+        return parent[x] = find(parent[x]);
+    }
 
-bool unionNodes(int a, int b) {
-    a = findParent(a);
-    b = findParent(b);
-    if (a == b) return false; // 사이클
-    if (rankArr[a] < rankArr[b]) swap(a, b);
-    parent[b] = a;
-    if (rankArr[a] == rankArr[b]) rankArr[a]++;
-    return true;
-}
+    bool unite(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a == b)return false;
+        if (size[a] < size[b])swap(a, b);
+        parent[b] = a;
+        if (size[a] == size[b])size[a]++;
+        return true;
+    }
+
+};
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int t;
-    cin >> t;
-
-    while (t--) {
+    int test_case;
+    cin >> test_case;
+    while (test_case--) {
+        bool hasCycle = false;
         int n, m;
         cin >> n >> m;
-
-        parent.resize(n + 1);
-        rankArr.assign(n + 1, 0);
-        for (int i = 1; i <= n; i++)
-            parent[i] = i;
-
-        bool hasCycle = false;
-        set<pair<int, int>> edgeSet;
-
-        for (int i = 0; i < m; i++) {
+        UnionFind uf(n + 1);
+        set<pair<int, int>>edgeSet;
+        for (int i = 0;i < m;i++) {
             int u, v;
             cin >> u >> v;
-            if (u > v) swap(u, v); // 무방향 정규화
+            if (u > v)swap(u, v);
 
-            // 중복 간선은 무시
-            if (edgeSet.count({ u, v })) continue;
-            edgeSet.insert({ u, v });
+            edgeSet.insert({ u,v });
 
-            if (!unionNodes(u, v)) {
+            if (!uf.unite(u, v)) {
                 hasCycle = true;
             }
         }
+        if (hasCycle) {
+            cout << 1 << "\n";
+        }
+        else {
+            cout << 0 << "\n";
+        }
 
-        cout << (hasCycle ? 1 : 0) << "\n";
     }
-
-    return 0;
 }
