@@ -34,7 +34,8 @@ int main() {
 				int j = i + diagonal;
 				M[i][j] = INT_MAX;
 				for (int k = i;k <= j - 1;k++) {
-					int count = M[i][k] + M[k + 1][j] + d[i - 1] * d[k] * d[j];
+					int count = M[i][k] + M[k + 1][j] + 
+						d[i - 1] * d[k] * d[j];
 					if (count < M[i][j]) {
 						M[i][j] = count;
 						K[i][j] = k;
