@@ -120,5 +120,11 @@
     <ClCompile Include="30_ShortestPath_Dijkstra.cpp">
       <Filter>리소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="33_위상정렬.cpp">
+      <Filter>리소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="34_무향 그래프의 연결요소.cpp">
+      <Filter>리소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
